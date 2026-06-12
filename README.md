@@ -19,7 +19,7 @@
    `![AI Optimization Copilot](docs/screenshots/ai-copilot.png)`
 
 4. **CSV Import / Data Source Readiness**  
-   `![Data Connectors](docs/screenshots/data-connectors.png)`
+   `![Data Connectors](docs/screenshots/csv-import-readiness.png)`
 
 ## Product Overview
 
@@ -149,6 +149,18 @@ Demo flow:
 3. Use the **Savings Opportunity Board** to show owner-aware, risk-adjusted recommendations.
 4. Ask the **AI Copilot** for a 30/60/90 optimization plan.
 5. Export the executive **Markdown report**.
+
+---
+
+## Portfolio Positioning
+
+Hybrid FinOps Command Center represents a robust demonstration of enterprise SaaS product design and architecture. It answers the fundamental question: *How do we build intelligent, specialized B2B software that solves cross-domain infrastructure problems?*
+
+### What this project demonstrates:
+- **Product Strategy:** Moving beyond simplistic dashboards by integrating actionable intelligence, risk vectors, and cross-platform (Hybrid) normalization.
+- **Frontend Architecture:** Clean, state-driven React applications built with modern tools (Vite, Tailwind v4, Recharts) optimized for immediate rendering.
+- **AI Integration:** Securely marrying deterministic rules engines (PapaParse/Regex) with generative AI (Google Gemini 2.5) via Serverless Edge Functions, demonstrating cost-effective token management.
+- **Enterprise UX/UI:** Translating dense data into boardroom-ready visual hierarchies with dark mode glassmorphism and clear KPI storytelling.
 
 ---
 
