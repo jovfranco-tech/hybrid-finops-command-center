@@ -23,6 +23,8 @@ const ConnectorCard = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  const { t } = useLanguage();
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -51,7 +53,7 @@ const ConnectorCard = ({
           </span>
         </div>
         <h3 className="font-semibold text-slate-200 mb-1">{title}</h3>
-        <p className="text-sm text-slate-400 mb-6">Import normalized cost and usage telemetry.</p>
+        <p className="text-sm text-slate-400 mb-6">{t.connectors?.cardSubtitle || "Import normalized cost and usage telemetry."}</p>
       </div>
 
       <div className="pt-4 border-t border-[#1E293B] flex items-center justify-between">
@@ -67,7 +69,7 @@ const ConnectorCard = ({
           disabled={isUploading}
           className="flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50"
         >
-          {isUploading ? <><UploadCloud className="w-4 h-4 animate-bounce" /> Parsing...</> : <><UploadCloud className="w-4 h-4" /> Upload CSV</>}
+          {isUploading ? <><UploadCloud className="w-4 h-4 animate-bounce" /> {t.connectors?.uploading || "Parsing..."}</> : <><UploadCloud className="w-4 h-4" /> {t.connectors?.uploadBtn || "Upload CSV"}</>}
         </button>
       </div>
     </div>
@@ -89,7 +91,7 @@ export const DataConnectors = () => {
         <div className="flex justify-between items-end">
           <div>
             <h1 className="text-3xl font-bold text-slate-100 tracking-tight">{t.nav.connectors}</h1>
-            <p className="text-slate-400 mt-1 text-sm">Manage data imports and global intelligence context</p>
+            <p className="text-slate-400 mt-1 text-sm">{t.connectors?.subtitle}</p>
           </div>
           
           <div className="flex items-center gap-2 bg-[#0A0F1C] border border-white/5 p-1 rounded-lg">
@@ -119,33 +121,33 @@ export const DataConnectors = () => {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold text-indigo-100 flex items-center gap-2">
                 <Database className="w-5 h-5 text-indigo-400" />
-                CSV Intelligence Staging Area
+                {t.connectors?.stagingTitle}
               </h3>
               <button 
                 onClick={clearCsvData}
                 className="flex items-center gap-2 text-sm text-rose-400 hover:text-rose-300 transition-colors bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20"
               >
-                <Trash2 className="w-4 h-4" /> Clear All Data
+                <Trash2 className="w-4 h-4" /> {t.connectors?.clearData}
               </button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
-                <p className="text-xs text-slate-500 mb-1">Total Normalized Rows</p>
+                <p className="text-xs text-slate-500 mb-1">{t.connectors?.totalRows}</p>
                 <p className="text-2xl font-bold text-slate-200">{csvMetrics.totalRows.toLocaleString()}</p>
               </div>
               <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
-                <p className="text-xs text-slate-500 mb-1">Owner Coverage</p>
+                <p className="text-xs text-slate-500 mb-1">{t.connectors?.ownerCoverage}</p>
                 <div className="flex items-end gap-2">
                   <p className={`text-2xl font-bold ${csvMetrics.ownerCoverage > 80 ? 'text-emerald-400' : 'text-amber-400'}`}>{csvMetrics.ownerCoverage}%</p>
                   {csvMetrics.ownerCoverage < 90 && <AlertCircle className="w-4 h-4 text-amber-400 mb-1.5" />}
                 </div>
               </div>
               <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
-                <p className="text-xs text-slate-500 mb-1">Platforms Ingested</p>
+                <p className="text-xs text-slate-500 mb-1">{t.connectors?.platformsIngested}</p>
                 <p className="text-2xl font-bold text-slate-200">{csvMetrics.platforms.length}</p>
               </div>
               <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
-                <p className="text-xs text-slate-500 mb-1">Last Import</p>
+                <p className="text-xs text-slate-500 mb-1">{t.connectors?.lastImport}</p>
                 <p className="text-sm font-medium text-slate-300 mt-1">{dataFreshness.toLocaleTimeString()}</p>
               </div>
             </div>
@@ -175,7 +177,7 @@ export const DataConnectors = () => {
               <p className="text-sm text-slate-500 mb-6">Direct API integrations with cloud providers.</p>
             </div>
             <div className="pt-4 border-t border-[#1E293B]">
-              <span className="text-sm font-medium text-slate-600">Coming Soon</span>
+              <span className="text-sm font-medium text-slate-600">{t.connectors?.comingSoon || "Coming Soon"}</span>
             </div>
           </div>
         </div>

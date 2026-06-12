@@ -35,6 +35,19 @@ export const es = {
   common: {
     search: "Buscar recursos, dueños o problemas...",
     filter: "Filtros",
-    export: "Exportar Markdown"
+    export: "Exportar Reporte"
+  },
+  connectors: {
+    subtitle: "Gestiona importaciones de datos y el contexto global de inteligencia",
+    stagingTitle: "Área de Staging de Inteligencia CSV",
+    clearData: "Limpiar Todos los Datos",
+    totalRows: "Total de Filas Normalizadas",
+    ownerCoverage: "Cobertura de Propietarios",
+    platformsIngested: "Plataformas Ingeridas",
+    lastImport: "Última Importación",
+    cardSubtitle: "Importa telemetría normalizada de costos y uso.",
+    uploading: "Procesando...",
+    uploadBtn: "Subir CSV",
+    comingSoon: "Próximamente"
   }
 };

@@ -36,5 +36,18 @@ export const en = {
     search: "Search resources, owners or issues...",
     filter: "Filters",
     export: "Export Markdown"
+  },
+  connectors: {
+    subtitle: "Manage data imports and global intelligence context",
+    stagingTitle: "CSV Intelligence Staging Area",
+    clearData: "Clear All Data",
+    totalRows: "Total Normalized Rows",
+    ownerCoverage: "Owner Coverage",
+    platformsIngested: "Platforms Ingested",
+    lastImport: "Last Import",
+    cardSubtitle: "Import normalized cost and usage telemetry.",
+    uploading: "Parsing...",
+    uploadBtn: "Upload CSV",
+    comingSoon: "Coming Soon"
   }
 };

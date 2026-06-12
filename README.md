@@ -2,7 +2,8 @@
 
 **AI-native hybrid infrastructure waste intelligence platform for cloud, virtualization, storage, backup, and Microsoft 365.**
 
-![Dashboard Overview](docs/screenshots/dashboard.png) *(Placeholder: Add a high-resolution screenshot of the main dashboard here)*
+🌍 **Live Production:** [hybrid-finops-cc.vercel.app](https://hybrid-finops-cc.vercel.app)  
+📦 **Repository:** [github.com/jovfranco-tech/hybrid-finops-command-center](https://github.com/jovfranco-tech/hybrid-finops-command-center)
 
 ## Product Overview
 
@@ -134,11 +135,9 @@ When presenting this application as a portfolio piece or to stakeholders, follow
 
 ## Roadmap
 
-- [x] **v0.1.0:** Portfolio MVP (Mock data, UI framework, Deterministic Copilot).
-- [x] **v0.2.0:** CSV Intelligence Layer (PapaParse integration, LocalStorage, Offline rules engine).
-- [x] **v0.3.0:** Gemini Copilot Backend (Vercel Serverless, Structured Outputs, Context Summarization).
-- [ ] **v0.4.0:** ServiceNow / Jira Workflow (ITSM integration for one-click ticket generation).
-- [ ] **v1.0.0:** Real API Connectors (Direct read-only integrations with Azure Resource Graph and vCenter).
+- [x] **v0.1.0:** Portfolio MVP (UI framework, CSV Intelligence Engine, Gemini Copilot, Bilingual).
+- [ ] **v0.2.0:** ServiceNow / Jira Workflow (ITSM integration for one-click ticket generation).
+- [ ] **v0.3.0:** Real API Connectors (Direct read-only integrations with Azure Resource Graph and vCenter).
 
 ---
 
