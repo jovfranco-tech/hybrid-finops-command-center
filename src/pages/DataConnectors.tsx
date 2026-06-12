@@ -18,7 +18,8 @@ const ConnectorCard = ({
   format: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any,
-  onUpload: (file: File, platform: Platform) => void
+  onUpload: (file: File, platform: Platform) => void,
+  sampleFile?: string
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -56,21 +57,28 @@ const ConnectorCard = ({
         <p className="text-sm text-slate-400 mb-6">{t.connectors?.cardSubtitle || "Import normalized cost and usage telemetry."}</p>
       </div>
 
-      <div className="pt-4 border-t border-[#1E293B] flex items-center justify-between">
-        <input 
-          type="file" 
-          accept=".csv" 
-          className="hidden" 
-          ref={fileInputRef} 
-          onChange={handleFileChange}
-        />
-        <button 
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploading}
-          className="flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50"
-        >
-          {isUploading ? <><UploadCloud className="w-4 h-4 animate-bounce" /> {t.connectors?.uploading || "Parsing..."}</> : <><UploadCloud className="w-4 h-4" /> {t.connectors?.uploadBtn || "Upload CSV"}</>}
-        </button>
+      <div className="pt-4 border-t border-[#1E293B] flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <input 
+            type="file" 
+            accept=".csv" 
+            className="hidden" 
+            ref={fileInputRef} 
+            onChange={handleFileChange}
+          />
+          <button 
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50"
+          >
+            {isUploading ? <><UploadCloud className="w-4 h-4 animate-bounce" /> {t.connectors?.uploading || "Parsing..."}</> : <><UploadCloud className="w-4 h-4" /> {t.connectors?.uploadBtn || "Upload CSV"}</>}
+          </button>
+        </div>
+        {sampleFile && (
+          <a href={`/sample-data/${sampleFile}`} download className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
+            Download sample CSV
+          </a>
+        )}
       </div>
     </div>
   );
@@ -102,8 +110,8 @@ export const DataConnectors = () => {
               Mock Engine
             </button>
             <button
-              onClick={() => setSourceMode('CSV Ready')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${sourceMode === 'CSV Ready' ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-400 hover:text-slate-200'}`}
+              onClick={() => setSourceMode('Imported CSV Data')}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${sourceMode === 'Imported CSV Data' ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-400 hover:text-slate-200'}`}
             >
               CSV Data
             </button>
@@ -143,8 +151,14 @@ export const DataConnectors = () => {
                 </div>
               </div>
               <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
-                <p className="text-xs text-slate-500 mb-1">{t.connectors?.platformsIngested}</p>
+                <p className="text-xs text-slate-500 mb-1">{t.connectors?.platformsIngested || 'Platforms'}</p>
                 <p className="text-2xl font-bold text-slate-200">{csvMetrics.platforms.length}</p>
+              </div>
+              <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
+                <p className="text-xs text-slate-500 mb-1">Data Quality</p>
+                <p className={`text-2xl font-bold ${csvMetrics.dataQuality === 'Good' ? 'text-emerald-400' : csvMetrics.dataQuality === 'Partial' ? 'text-amber-400' : 'text-rose-400'}`}>
+                  {csvMetrics.dataQuality}
+                </p>
               </div>
               <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
                 <p className="text-xs text-slate-500 mb-1">{t.connectors?.lastImport}</p>
@@ -155,13 +169,13 @@ export const DataConnectors = () => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
-          <ConnectorCard title="Azure Cost Export" platform="Azure" format="CSV" icon={Cloud} onUpload={handleUpload} />
-          <ConnectorCard title="VMware Inventory" platform="VMware" format="CSV" icon={Database} onUpload={handleUpload} />
+          <ConnectorCard title="Azure Cost Export" platform="Azure" format="CSV" icon={Cloud} onUpload={handleUpload} sampleFile="azure-cost-export-sample.csv" />
+          <ConnectorCard title="VMware Inventory" platform="VMware" format="CSV" icon={Database} onUpload={handleUpload} sampleFile="vmware-inventory-sample.csv" />
           <ConnectorCard title="Oracle VM Export" platform="Oracle VM" format="CSV" icon={Database} onUpload={handleUpload} />
-          <ConnectorCard title="NetApp Volumes" platform="NetApp" format="CSV" icon={Database} onUpload={handleUpload} />
-          <ConnectorCard title="Pure Storage" platform="Pure Storage" format="CSV" icon={Database} onUpload={handleUpload} />
-          <ConnectorCard title="Rubrik Objects" platform="Rubrik" format="CSV" icon={Database} onUpload={handleUpload} />
-          <ConnectorCard title="SharePoint Sites" platform="SharePoint" format="CSV" icon={Cloud} onUpload={handleUpload} />
+          <ConnectorCard title="NetApp Volumes" platform="NetApp" format="CSV" icon={Database} onUpload={handleUpload} sampleFile="netapp-volumes-sample.csv" />
+          <ConnectorCard title="Pure Storage" platform="Pure Storage" format="CSV" icon={Database} onUpload={handleUpload} sampleFile="pure-volumes-sample.csv" />
+          <ConnectorCard title="Rubrik Objects" platform="Rubrik" format="CSV" icon={Database} onUpload={handleUpload} sampleFile="rubrik-objects-sample.csv" />
+          <ConnectorCard title="SharePoint Sites" platform="SharePoint" format="CSV" icon={Cloud} onUpload={handleUpload} sampleFile="sharepoint-storage-sample.csv" />
           
           <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between border-dashed border-2 border-[#1E293B] bg-transparent opacity-50">
             <div>

@@ -1,0 +1,4 @@
+ownerEmail,department,businessUnit,region
+alice@example.com,Engineering,R&D,US
+bob@example.com,Marketing,Sales,EMEA
+charlie@example.com,Data Science,R&D,APAC

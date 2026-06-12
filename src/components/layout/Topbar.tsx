@@ -22,7 +22,7 @@ export const Topbar = () => {
       <div className="flex items-center gap-4">
         <div className="flex bg-[#0A0F1C] border border-white/5 rounded-lg p-0.5 mr-2">
           <div className="px-3 py-1 flex items-center gap-2 text-xs font-medium text-slate-300">
-            <span className={`w-2 h-2 rounded-full ${sourceMode === 'Mock Data' ? 'bg-indigo-500' : sourceMode === 'CSV Ready' ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+            <span className={`w-2 h-2 rounded-full ${sourceMode === 'Mock Data' ? 'bg-indigo-500' : sourceMode === 'Imported CSV Data' ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
             {sourceMode}
           </div>
         </div>

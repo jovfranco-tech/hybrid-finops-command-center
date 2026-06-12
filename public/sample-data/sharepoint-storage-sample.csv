@@ -1,0 +1,5 @@
+siteName,storageGB,versionStorageGB,lastActivityDays,teamsConnected,externalSharing,ownerEmail
+marketing-collab,500,250,10,true,true,bob@example.com
+engineering-docs,1200,50,5,true,false,alice@example.com
+old-project-x,150,10,150,true,false,charlie@example.com
+vendor-portal,50,5,100,false,true,bob@example.com

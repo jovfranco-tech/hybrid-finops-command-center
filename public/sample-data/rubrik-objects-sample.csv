@@ -1,0 +1,4 @@
+objectName,retentionDays,isProtected,isRetired,storageTB,environment,ownerEmail
+db-prod-backup,30,true,false,15,Prod,alice@example.com
+vm-dev-backup,180,true,false,5,Dev,bob@example.com
+legacy-app-backup,30,true,true,10,Prod,charlie@example.com

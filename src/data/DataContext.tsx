@@ -15,6 +15,7 @@ interface DataContextType {
     totalRows: number;
     ownerCoverage: number;
     platforms: string[];
+    dataQuality: 'Good' | 'Partial' | 'Poor';
   } | null;
 }
 
@@ -60,7 +61,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     // If we already have data, we might want to append or merge, but for this version
     // we will simply append new data to existing CSV data.
     setCsvData(prev => [...prev, ...data]);
-    setSourceMode('CSV Ready');
+    setSourceMode('Imported CSV Data');
   };
 
   const clearCsvData = () => {
@@ -70,17 +71,24 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
 
   const getActiveData = (): OptimizationRecommendation[] => {
     if (sourceMode === 'Mock Data') return initialMockData;
-    if (sourceMode === 'CSV Ready') return csvData;
+    if (sourceMode === 'Imported CSV Data') return csvData;
     // Hybrid Mode
     return [...initialMockData, ...csvData];
   };
 
   const activeData = getActiveData();
 
+  const calculateDataQuality = (coverage: number): 'Good' | 'Partial' | 'Poor' => {
+    if (coverage >= 80) return 'Good';
+    if (coverage >= 40) return 'Partial';
+    return 'Poor';
+  };
+
   const csvMetrics = csvData.length > 0 ? {
     totalRows: csvData.length,
     ownerCoverage: Math.round((csvData.filter(d => !!d.owner).length / csvData.length) * 100),
-    platforms: Array.from(new Set(csvData.map(d => d.platform)))
+    platforms: Array.from(new Set(csvData.map(d => d.platform))),
+    dataQuality: calculateDataQuality(Math.round((csvData.filter(d => !!d.owner).length / csvData.length) * 100))
   } : null;
 
   return (

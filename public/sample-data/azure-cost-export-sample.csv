@@ -1,0 +1,5 @@
+resourceName,cost,meterCategory,ownerEmail,environment,tags
+az-vm-prod,1500,Virtual Machines,alice@example.com,Prod,"project:alpha"
+az-disk-orphaned,250,Managed Disks,,,
+az-vm-dev,300,Virtual Machines,bob@example.com,Dev,"project:beta"
+az-db-test,800,SQL Database,charlie@example.com,Test,""

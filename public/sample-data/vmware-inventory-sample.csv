@@ -1,0 +1,5 @@
+vmName,powerState,provisionedGB,usedGB,cpuAverage,memoryAverage,snapshotCount,oldestSnapshotDays,ownerEmail,environment
+vm-prod-01,PoweredOn,500,450,45,60,1,5,alice@example.com,Prod
+vm-dev-02,PoweredOn,200,50,5,15,0,0,bob@example.com,Dev
+vm-test-03,PoweredOff,150,10,0,0,5,45,charlie@example.com,Test
+vm-zombie-04,PoweredOff,1000,0,0,0,0,0,,Dev

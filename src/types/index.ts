@@ -28,7 +28,7 @@ export type ActionType =
 
 export type ProductionImpact = "None" | "Low" | "Medium" | "High";
 
-export type SourceMode = "Mock Data" | "CSV Ready" | "Hybrid Mode" | "API Future";
+export type SourceMode = "Mock Data" | "Imported CSV Data" | "Hybrid Mode";
 
 export interface OptimizationRecommendation {
   id: string;
@@ -51,6 +51,10 @@ export interface OptimizationRecommendation {
   productionImpact: ProductionImpact;
   isProduction: boolean;
   tags: string[];
+  source?: "Mock" | "CSV" | "Hybrid";
+  sourceFile?: string;
+  dataQuality?: "Good" | "Partial" | "Poor";
+  dataQualityNotes?: string[];
 }
 
 export interface PlatformSummary {
