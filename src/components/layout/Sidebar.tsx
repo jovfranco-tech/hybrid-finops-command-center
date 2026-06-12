@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Layers, Zap, ShieldAlert, FileText, Database } from 'lucide-react';
+import { LayoutDashboard, Layers, Zap, ShieldAlert, FileText, Database, ListTodo } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 export const Sidebar = () => {
@@ -9,6 +9,7 @@ export const Sidebar = () => {
     { icon: LayoutDashboard, label: t.nav.dashboard, path: '/dashboard' },
     { icon: Layers, label: t.nav.platforms, path: '/platforms' },
     { icon: Zap, label: t.nav.opportunities, path: '/opportunities' },
+    { icon: ListTodo, label: (t.nav as any).workflow || 'Optimization Workflow', path: '/workflow' },
     { icon: ShieldAlert, label: t.nav.risk, path: '/risk' },
     { icon: FileText, label: t.nav.reports, path: '/reports' },
     { icon: Database, label: t.nav.connectors, path: '/connectors' },

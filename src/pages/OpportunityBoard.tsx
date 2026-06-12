@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { MainLayout } from '../components/layout/MainLayout';
 import { useData } from '../data/DataContext';
-import { Search, AlertCircle, SearchX, Tag } from 'lucide-react';
+import { Search, AlertCircle, SearchX, Tag, Plus, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { RiskBadge } from '../components/ui/RiskBadge';
 import { useLanguage } from '../i18n/LanguageContext';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -25,7 +26,8 @@ const StatusBadge = ({ status }: { status: string }) => {
 
 export const OpportunityBoard = () => {
   const { t } = useLanguage();
-  const { activeData } = useData();
+  const { activeData, workflowActions, createAction } = useData();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPlatform, setFilterPlatform] = useState<string>('All');
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,8 +97,10 @@ export const OpportunityBoard = () => {
               <tbody className="divide-y divide-white/5">
                 {currentData.map((opp, index) => {
                   const isTopSaving = currentPage === 1 && index < 3 && filterPlatform === 'All' && !searchTerm;
+                  const existingAction = workflowActions.find(a => a.recommendationId === opp.id);
+                  
                   return (
-                  <tr key={opp.id} className={`hover:bg-white/5 transition-colors group cursor-pointer ${isTopSaving ? 'bg-emerald-500/5' : ''}`}>
+                  <tr key={opp.id} className={`hover:bg-white/5 transition-colors group ${isTopSaving ? 'bg-emerald-500/5' : ''}`}>
                     <td className="px-4 py-3">
                       <div className="font-medium text-slate-200 flex items-center gap-2">
                         {isTopSaving && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>}
@@ -143,9 +147,33 @@ export const OpportunityBoard = () => {
                       <StatusBadge status={opp.status} />
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <button className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/20 rounded-lg text-xs font-medium transition-colors whitespace-nowrap">
-                        {opp.recommendedAction}
-                      </button>
+                      {existingAction ? (
+                        <div className="flex flex-col items-end gap-2">
+                          <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-semibold border ${
+                            existingAction.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                            existingAction.status === 'Approved' ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20' :
+                            'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                          }`}>
+                            In Workflow: {existingAction.status}
+                          </span>
+                          <button 
+                            onClick={() => navigate('/workflow')}
+                            className="flex items-center gap-1 text-[10px] text-indigo-400 hover:text-indigo-300"
+                          >
+                            View Pipeline <ArrowRight className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-end gap-2">
+                          <button 
+                            onClick={() => createAction(opp)}
+                            className="flex items-center gap-1 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg text-xs font-medium transition-all shadow-lg shadow-indigo-500/20 whitespace-nowrap"
+                          >
+                            <Plus className="w-3 h-3" /> Create Action
+                          </button>
+                          <span className="text-[10px] text-slate-500">{opp.recommendedAction}</span>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 )})}

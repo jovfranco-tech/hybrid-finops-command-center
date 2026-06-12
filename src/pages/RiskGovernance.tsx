@@ -6,7 +6,7 @@ import { useData } from '../data/DataContext';
 
 export const RiskGovernance = () => {
   const { t } = useLanguage();
-  const { activeData, sourceMode, dataFreshness, csvMetrics } = useData();
+  const { activeData, sourceMode, dataFreshness, csvMetrics, workflowActions } = useData();
 
   const totalResources = activeData.length;
   const missingOwner = activeData.filter(r => !r.owner);
@@ -19,6 +19,11 @@ export const RiskGovernance = () => {
   const zeroImpactSavings = activeData
     .filter(r => r.productionImpact === 'None')
     .reduce((a, c) => a + c.monthlySavings, 0);
+
+  const totalActions = workflowActions.length;
+  const completedActions = workflowActions.filter(a => a.status === 'Completed').length;
+  const workflowCompletionRate = totalActions > 0 ? Math.round((completedActions / totalActions) * 100) : 0;
+  const exceptions = workflowActions.filter(a => a.status === 'Exception');
 
   return (
     <MainLayout>
@@ -58,6 +63,32 @@ export const RiskGovernance = () => {
             color="cyan" 
           />
         </div>
+
+        {totalActions > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <KpiCard 
+              title="Workflow Completion" 
+              value={`${workflowCompletionRate}%`} 
+              subtitle={`${completedActions} of ${totalActions} actions`} 
+              icon={ShieldCheck} 
+              color={workflowCompletionRate > 80 ? 'emerald' : 'amber'} 
+            />
+            <KpiCard 
+              title="Exceptions Logged" 
+              value={exceptions.length.toString()} 
+              subtitle="Skipped optimizations" 
+              icon={ShieldAlert} 
+              color={exceptions.length > 0 ? 'rose' : undefined} 
+            />
+            <KpiCard 
+              title="Savings at Risk (Exceptions)" 
+              value={`$${exceptions.reduce((acc, act) => acc + act.estimatedMonthlySavings, 0).toLocaleString()}`} 
+              subtitle="Monthly savings blocked" 
+              icon={ShieldAlert} 
+              color="rose" 
+            />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="glass-panel p-6 rounded-2xl border border-white/5 bg-[#050810]">

@@ -121,3 +121,46 @@ export interface ReportSection {
   title: string;
   content: string;
 }
+
+export type WorkflowStatus =
+  | "New"
+  | "Assigned"
+  | "In Review"
+  | "Approved"
+  | "Rejected"
+  | "Exception"
+  | "Scheduled"
+  | "Completed";
+
+export type ApprovalRisk =
+  | "Low"
+  | "Medium"
+  | "High";
+
+export type OptimizationAction = {
+  id: string;
+  recommendationId: string;
+  platform: Platform;
+  resourceName: string;
+  issue: string;
+  owner: string | null;
+  assignedTo: string | null;
+  country: string;
+  businessUnit: string;
+  estimatedMonthlySavings: number;
+  approvedMonthlySavings: number | null;
+  estimatedAnnualSavings: number;
+  approvedAnnualSavings: number | null;
+  riskLevel: RiskLevel;
+  approvalRisk: ApprovalRisk;
+  status: WorkflowStatus;
+  dueDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  approvalNotes: string[];
+  actionPlan: string;
+  generatedOwnerEmail: string;
+  generatedTicketDraft: string;
+  exceptionReason?: string;
+  completedAt?: string;
+};

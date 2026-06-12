@@ -7,7 +7,7 @@ import type { CopilotMessage, CopilotStructuredResponse } from '../../types';
 
 export const CopilotDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
   const { t, language } = useLanguage();
-  const { activeData } = useData();
+  const { activeData, workflowActions } = useData();
   const [messages, setMessages] = useState<CopilotMessage[]>([
     {
       id: 'welcome',
@@ -106,10 +106,20 @@ export const CopilotDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: (
         impact: r.productionImpact
       }));
 
+      const workflowSummary = {
+        totalActions: workflowActions.length,
+        approvedSavings: workflowActions.filter(a => ['Approved', 'Completed'].includes(a.status)).reduce((acc, a) => acc + (a.approvedMonthlySavings || a.estimatedMonthlySavings), 0),
+        pendingApprovals: workflowActions.filter(a => a.status === 'In Review').length,
+        exceptions: workflowActions.filter(a => a.status === 'Exception').length
+      };
+
       // In a real scenario, we might want to truncate contextSummary if it's too large for the model token limit
       const payload = {
         prompt: text,
-        context: contextSummary.slice(0, 100), // limit to top 100 issues for safety
+        context: {
+          data: contextSummary.slice(0, 100), // limit to top 100 issues for safety
+          workflow: workflowSummary
+        },
         language
       };
 

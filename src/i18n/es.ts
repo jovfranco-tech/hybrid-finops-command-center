@@ -3,6 +3,7 @@ export const es = {
     dashboard: 'Resumen Ejecutivo',
     platforms: 'Topología de Plataformas',
     opportunities: 'Panel de Optimización',
+    workflow: 'Workflow de Optimización',
     risk: 'Riesgo y Gobernanza',
     reports: 'Reportes Directivos',
     connectors: 'Integración de Datos'
@@ -27,9 +28,10 @@ export const es = {
       "¿Dónde podemos ahorrar 10% este trimestre?",
       "Muéstrame quick wins de bajo riesgo",
       "Genera un plan 30/60/90",
-      "¿Qué no debemos tocar?",
-      "Prepara un resumen ejecutivo",
-      "¿Qué recursos no tienen owner?"
+      "¿Qué recursos no tienen owner?",
+      "¿Qué acciones debo aprobar primero?",
+      "¿Qué ahorros están en riesgo?",
+      "Resume el pipeline de optimización."
     ]
   },
   common: {

@@ -1,4 +1,4 @@
-# Hybrid FinOps Command Center v0.2.0 — CSV Intelligence Layer
+# Hybrid FinOps Command Center v0.3.0 — Optimization Workflow Layer
 
 **AI-native hybrid infrastructure waste intelligence platform for cloud, virtualization, storage, backup, and Microsoft 365.**
 
@@ -49,12 +49,14 @@ The platform's unified schema currently ingests and analyzes telemetry from:
 ## Core Features
 
 - **Executive Overview:** High-level trailing run-rates, risk-adjusted potential savings, and a proprietary Hybrid Waste Score designed for boardroom reporting.
+- **Optimization Workflow Layer:** Convert intelligence into action. Centralized Savings Pipeline Dashboard, Action Register, and localized state persistence to track workflow from New to Completed.
 - **Platform Breakdown:** Granular visibility into waste distribution across diverse vendors and operational layers.
 - **Savings Opportunity Board:** An actionable, dense data grid detailing exact savings opportunities with calculated confidence levels and production impact metrics.
-- **Risk & Governance Layer:** Deep-dive analytics into high-risk optimizations, missing resource owners (orphans), and zero-downtime execution planning.
+- **Risk & Governance Layer:** Deep-dive analytics into high-risk optimizations, missing resource owners (orphans), zero-downtime execution planning, and workflow completion metrics.
 - **Waste Intelligence Rules:** Deterministic, offline heuristics that parse telemetry to immediately flag actionable waste (e.g., `CPU < 5%`, `Snapshots > 30 Days`).
-- **AI Optimization Copilot:** Context-aware, Gemini 2.5 Flash-powered chat interface capable of generating 30/60/90-day execution plans and drafting emails to resource owners. Includes a seamless offline regex fallback.
-- **Executive Report Export:** Auto-generated, Markdown-based CIO briefings ready for copy-pasting into Notion or Confluence.
+- **AI Optimization Copilot:** Context-aware, Gemini 2.5 Flash-powered chat interface capable of generating 30/60/90-day execution plans, tracking workflow progress, and drafting emails to resource owners. Includes a seamless offline regex fallback.
+- **Execution Assets Generator:** Auto-generates deterministic owner follow-up emails and ServiceNow/Jira ticket drafts in both English and Spanish.
+- **Executive Report Export:** Auto-generated, Markdown-based CIO briefings ready for copy-pasting into Notion or Confluence, now featuring full Workflow Optimization Summaries.
 - **CSV Import Readiness:** A robust staging area powered by PapaParse to ingest raw telemetry exports natively in the browser.
 - **Bilingual Support (EN/ES):** Real-time, localized toggling utilizing strict, high-end enterprise FinOps terminology.
 
@@ -146,9 +148,10 @@ Production deployment:
 Demo flow:
 1. Start with the **Executive Overview** and explain the Hybrid Waste Score.
 2. Open **Platform Topology** to show cross-domain waste across Azure, VMware, Oracle VM, NetApp, Pure, Rubrik, and SharePoint.
-3. Use the **Savings Opportunity Board** to show owner-aware, risk-adjusted recommendations.
-4. Ask the **AI Copilot** for a 30/60/90 optimization plan.
-5. Export the executive **Markdown report**.
+3. Use the **Savings Opportunity Board** to locate a specific issue (e.g., untagged Azure VM) and click **Create Action**.
+4. Head to **Optimization Workflow** to show the Pipeline Dashboard and Action Register. Open the Action Detail Drawer to view auto-generated emails and ITSM ticket drafts. Approve the action.
+5. Ask the **AI Copilot** for a 30/60/90 optimization plan, which is now aware of your pending and approved actions.
+6. Export the executive **Markdown report**, which includes your workflow metrics.
 
 ---
 
@@ -168,8 +171,8 @@ Hybrid FinOps Command Center represents a robust demonstration of enterprise Saa
 
 - [x] **v0.1.0:** Portfolio MVP (UI framework, CSV Intelligence Engine, Gemini Copilot, Bilingual).
 - [x] **v0.2.0:** CSV Intelligence Layer (Browser-local parsing, Data Quality Score, Mock/CSV/Hybrid modes, Sample CSVs).
-- [ ] **v0.3.0:** Real API Connectors (Direct read-only integrations with Azure Resource Graph and vCenter).
-- [ ] **v0.4.0:** ServiceNow / Jira Workflow (ITSM integration for one-click ticket generation).
+- [x] **v0.3.0:** Optimization Workflow Layer (Action Register, Approval Queue, Email/Ticket Drafts, Local Persistence).
+- [ ] **v0.4.0:** Real API Connectors (Direct read-only integrations with Azure Resource Graph and vCenter).
 
 ---
 

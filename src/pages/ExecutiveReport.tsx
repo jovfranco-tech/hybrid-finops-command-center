@@ -6,12 +6,27 @@ import { calculateKpis } from '../utils/calculations';
 
 export const ExecutiveReport = () => {
   const { t } = useLanguage();
-  const { activeData, sourceMode, csvMetrics } = useData();
+  const { activeData, sourceMode, csvMetrics, workflowActions } = useData();
   const kpis = calculateKpis(activeData);
   
   const topOpportunities = [...activeData]
     .sort((a, b) => b.monthlySavings - a.monthlySavings)
     .slice(0, 5);
+
+  const approvedSavings = workflowActions.reduce((acc, act) => {
+    if (act.status === 'Approved' || act.status === 'Scheduled' || act.status === 'Completed') {
+      return acc + (act.approvedMonthlySavings || act.estimatedMonthlySavings);
+    }
+    return acc;
+  }, 0);
+  const completedSavings = workflowActions.reduce((acc, act) => {
+    if (act.status === 'Completed') {
+      return acc + (act.approvedMonthlySavings || act.estimatedMonthlySavings);
+    }
+    return acc;
+  }, 0);
+  const pendingSavings = workflowActions.reduce((acc, act) => act.status === 'In Review' ? acc + act.estimatedMonthlySavings : acc, 0);
+  const pendingActions = workflowActions.filter(a => a.status === 'In Review').slice(0, 5);
 
   const generateMarkdown = () => {
     const md = `
@@ -33,10 +48,19 @@ ${topOpportunities.map((o, i) => `${i + 1}. **${o.resourceName}** (${o.platform}
    - Owner: ${o.owner || 'Unassigned'}
 `).join('\n')}
 
+## Optimization Workflow Summary
+- **Actions Logged:** ${workflowActions.length}
+- **Approved Monthly Savings:** $${approvedSavings.toLocaleString()}
+- **Completed Monthly Savings:** $${completedSavings.toLocaleString()}
+- **Pending Approval Savings:** $${pendingSavings.toLocaleString()}
+
+${pendingActions.length > 0 ? `### Top Pending Approvals
+${pendingActions.map((a, i) => `${i + 1}. **${a.resourceName}** - $${a.estimatedMonthlySavings.toLocaleString()}/mo (Owner: ${a.owner || 'Unknown'})`).join('\n')}
+` : ''}
 ## 30/60/90 Day Plan
-- **30 Days:** Execute all 'Quick Wins' (Zero downtime).
+- **30 Days:** Execute all 'Quick Wins' and currently approved workflow actions.
 - **60 Days:** Right-size Azure/VMware non-prod (Requires maintenance windows).
-- **90 Days:** Re-tier NetApp cold data and Oracle VM consolidation.
+- **90 Days:** Expand workflow assignment to all missing owners.
     `;
     
     const blob = new Blob([md], { type: 'text/markdown' });
@@ -110,9 +134,16 @@ ${topOpportunities.map((o, i) => `${i + 1}. **${o.resourceName}** (${o.platform}
                   ))}
                 </ul>
 
+                <h2 className="text-xl font-bold mt-6 mb-3 text-indigo-900">Optimization Workflow</h2>
+                <ul className="space-y-2 mb-6">
+                  <li className="text-sm border-b border-slate-200 pb-2">Approved Savings: <strong className="text-emerald-700">${approvedSavings.toLocaleString()}</strong></li>
+                  <li className="text-sm border-b border-slate-200 pb-2">Completed Savings: <strong className="text-emerald-700">${completedSavings.toLocaleString()}</strong></li>
+                  <li className="text-sm border-b border-slate-200 pb-2">Pending Approval: <strong className="text-amber-700">${pendingSavings.toLocaleString()}</strong></li>
+                </ul>
+
                 <h2 className="text-xl font-bold mt-6 mb-3 text-indigo-900">Risk Assessment</h2>
                 <p className="text-sm leading-relaxed mb-4">
-                  Execution of the "Quick Wins" strategy guarantees zero production impact. However, {activeData.filter(r => r.riskLevel === 'High').length} workloads are classified as High Risk and require manual engineering validation.
+                  Execution of the "Quick Wins" strategy guarantees zero production impact. However, {activeData.filter(r => r.riskLevel === 'High').length} workloads are classified as High Risk and require manual engineering validation through the approval workflow.
                 </p>
               </div>
             </div>

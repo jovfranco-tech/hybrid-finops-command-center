@@ -1,5 +1,23 @@
 # Changelog
 
+## [v0.3.0] - 2026-06-12
+### Added
+- **Optimization Workflow Layer**: Convert recommendations into governed optimization actions.
+- **Savings Pipeline Dashboard**: Centralized view for action tracking and estimated vs approved savings.
+- **Action Register & Approval Queue**: Detailed grid to track state transitions.
+- **Action Detail Drawer**: Dedicated view for specific action plans and context.
+- **Local Workflow Persistence**: State preserved locally with localStorage.
+- **Owner Follow-up Generator**: Automated email drafts for respective action owners.
+- **ITSM Ticket Generator**: ServiceNow/Jira-style draft creation for tracking.
+- **Workflow-Aware Copilot**: Gemini context now includes workflow summary and pending approvals.
+- **Enhanced Executive Report**: Markdown export now summarizes workflow optimizations and approved savings.
+- **Bilingual Workflow**: EN/ES support extended to workflow UI, emails, and ticket drafts.
+
+### Security
+- **No Real Connectors**: No sensitive connections to ServiceNow or Jira; functionality is purely deterministic.
+- **Local Data Only**: Workflow state is entirely contained in browser storage.
+- **Minimized Copilot Payload**: Only summarized workflow context is passed to the LLM.
+
 ## [v0.2.0] - 2026-06-12
 ### Added
 - **CSV Intelligence Layer**: Browser-local CSV parsing with PapaParse.

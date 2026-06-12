@@ -3,6 +3,7 @@ export const en = {
     dashboard: "Executive Overview",
     platforms: "Platform Topology",
     opportunities: "Optimization Board",
+    workflow: "Optimization Workflow",
     risk: "Risk & Governance",
     reports: "Board Reports",
     connectors: "Data Integration"
@@ -27,9 +28,10 @@ export const en = {
       "Where can we save 10% this quarter?",
       "Show low-risk quick wins",
       "Generate a 30/60/90 optimization plan",
-      "What should we not touch?",
-      "Prepare an executive summary",
-      "Which resources have no owner?"
+      "Which resources have no owner?",
+      "What actions should I approve first?",
+      "Which savings are at risk?",
+      "Summarize the optimization pipeline."
     ]
   },
   common: {
