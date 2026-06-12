@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.2.0] - 2026-06-12
+### Added
+- **CSV Intelligence Layer**: Browser-local CSV parsing with PapaParse.
+- **Source Modes**: Mock Data, Imported CSV Data, and Hybrid Mode.
+- **Sample CSVs**: Downloadable templates for VMware, Azure, SharePoint, Rubrik, NetApp, Pure Storage, and Owner Mapping.
+- **Data Quality Score**: Real-time scoring for imported files.
+- **CSV-driven Recommendations**: Rules engine generates recommendations based on imported CSV data.
+- **Source Badges**: Visually distinct badges for Mock, CSV, and Hybrid recommendations.
+- **Global Data Reflection**: Imported data reflected across KPIs, Platform Breakdown, Savings Opportunity Board, Risk & Governance, and Executive Report.
+- **Gemini Copilot Enhancement**: Context now includes source mode and data quality summaries without sending full CSV rows, ensuring data privacy.
+- **Documentation**: Updated README, CHANGELOG, and demo documentation.
+
 ## [v0.1.0] - 2026-06-12
 ### Added
 - **Initial Enterprise Release**: Consolidated portfolio MVP.

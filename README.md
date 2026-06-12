@@ -1,4 +1,4 @@
-# Hybrid FinOps Command Center
+# Hybrid FinOps Command Center v0.2.0 — CSV Intelligence Layer
 
 **AI-native hybrid infrastructure waste intelligence platform for cloud, virtualization, storage, backup, and Microsoft 365.**
 
@@ -167,8 +167,9 @@ Hybrid FinOps Command Center represents a robust demonstration of enterprise Saa
 ## Roadmap
 
 - [x] **v0.1.0:** Portfolio MVP (UI framework, CSV Intelligence Engine, Gemini Copilot, Bilingual).
-- [ ] **v0.2.0:** ServiceNow / Jira Workflow (ITSM integration for one-click ticket generation).
+- [x] **v0.2.0:** CSV Intelligence Layer (Browser-local parsing, Data Quality Score, Mock/CSV/Hybrid modes, Sample CSVs).
 - [ ] **v0.3.0:** Real API Connectors (Direct read-only integrations with Azure Resource Graph and vCenter).
+- [ ] **v0.4.0:** ServiceNow / Jira Workflow (ITSM integration for one-click ticket generation).
 
 ---
 

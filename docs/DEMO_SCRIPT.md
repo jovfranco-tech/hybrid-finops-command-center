@@ -10,7 +10,9 @@ This document provides tailored scripts for presenting the application to differ
 
 *On the **Executive Overview**, you immediately see our proprietary Hybrid Waste Score and the true risk-adjusted savings potential.*
 
-*Drilling down into the **Savings Opportunity Board**, we don't just list resources; our deterministic engine flags exact actions—like downsizing a specific Azure VM—with an calculated risk level and an owner.*
+*Next, we navigate to the **Data Connectors**. We can download sample templates, import our real-world CSV exports from VMware or Azure, and the browser locally parses them with PapaParse—instantly generating a Data Quality Score and applying our heuristic rules to find waste without sending sensitive data to the backend.*
+
+*Drilling down into the **Savings Opportunity Board**, we don't just list resources; our deterministic engine flags exact actions—like downsizing a specific Azure VM—with a calculated risk level, source badge, and an owner.*
 
 *To execute, we open the **AI FinOps Analyst**. Powered securely by Gemini 2.5 via Serverless Edge, I can ask for a '30-day optimization plan'. The AI parses our normalized data and outputs a structured execution plan.*
 

@@ -11,7 +11,8 @@ const ConnectorCard = ({
   platform,
   format, 
   icon: Icon,
-  onUpload
+  onUpload,
+  sampleFile
 }: { 
   title: string, 
   platform: Platform,
