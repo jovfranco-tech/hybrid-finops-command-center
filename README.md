@@ -5,6 +5,22 @@
 🌍 **Live Production:** [hybrid-finops-cc.vercel.app](https://hybrid-finops-cc.vercel.app)  
 📦 **Repository:** [github.com/jovfranco-tech/hybrid-finops-command-center](https://github.com/jovfranco-tech/hybrid-finops-command-center)
 
+## 📸 Screenshots
+
+*(Replace these paths with actual high-resolution images of the application in your repository)*
+
+1. **Executive Overview**  
+   `![Executive Overview](docs/screenshots/executive-overview.png)`
+
+2. **Savings Opportunity Board**  
+   `![Savings Opportunity Board](docs/screenshots/savings-board.png)`
+
+3. **AI Optimization Copilot**  
+   `![AI Optimization Copilot](docs/screenshots/ai-copilot.png)`
+
+4. **CSV Import / Data Source Readiness**  
+   `![Data Connectors](docs/screenshots/data-connectors.png)`
+
 ## Product Overview
 
 Hybrid FinOps Command Center is an enterprise-grade intelligence layer designed for CIOs, Infrastructure Directors, and Cloud Operations teams. It moves beyond standard cloud billing dashboards by providing a **unified waste intelligence engine** across hybrid environments. 
@@ -122,14 +138,17 @@ The application is natively tuned for Vercel deployment.
 
 ---
 
-## Suggested Demo Script (Portfolio Pitch)
+## Live Demo
 
-When presenting this application as a portfolio piece or to stakeholders, follow this narrative flow:
+Production deployment:
+[https://hybrid-finops-cc.vercel.app](https://hybrid-finops-cc.vercel.app)
 
-1. **The Executive View (Dashboard):** Start on the main dashboard. Emphasize the UI's premium "glassmorphism" aesthetic. Point out that the Hybrid Waste Score immediately tells a CIO the health of their infrastructure efficiency.
-2. **The Drill-Down (Opportunity Board):** Transition to the Opportunity Board. Demonstrate the data density and sorting mechanics. Show how "Risk Level" dictates the actionability of a recommendation.
-3. **The Data Intake (Data Connectors):** Navigate to the Data Connectors. Explain the Local/Offline architecture. Switch the global context from "Mock Data" to "CSV Ready" to demonstrate dynamic React Context rendering. 
-4. **The AI Analyst (Gemini Copilot):** Open the Copilot sidebar. Type: *"Give me a 30-day action plan focusing only on Low-Risk VMware snapshots."* Wait for the structured JSON response to render beautiful UI components with precise dollar amounts. Emphasize that the AI is fully context-aware but securely restricted.
+Demo flow:
+1. Start with the **Executive Overview** and explain the Hybrid Waste Score.
+2. Open **Platform Topology** to show cross-domain waste across Azure, VMware, Oracle VM, NetApp, Pure, Rubrik, and SharePoint.
+3. Use the **Savings Opportunity Board** to show owner-aware, risk-adjusted recommendations.
+4. Ask the **AI Copilot** for a 30/60/90 optimization plan.
+5. Export the executive **Markdown report**.
 
 ---
 
