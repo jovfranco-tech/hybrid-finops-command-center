@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #060913;
+  --color-surface: #0B1221;
+  --color-surface-hover: #131B2F;
+  --color-primary: #6366F1; /* Indigo */
+  --color-emerald: #10B981; /* Savings, Quick wins */
+  --color-cyan: #06B6D4; /* AI, Copilot */
+  --color-rose: #F43F5E; /* High Risk, Owner Missing */
+  --color-amber: #F59E0B; /* Medium Risk, Validation */
+  --color-text-main: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --color-bg-primary: #02040A;
+  --color-bg-secondary: #0A0F1C;
+  --color-border: #1E293B;
+  --color-surface: rgba(10, 15, 28, 0.4);
+  --color-surface-hover: rgba(30, 41, 59, 0.5);
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  body {
+    background-color: var(--color-bg-primary);
+    background-image: radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.05) 0%, transparent 70%);
+    color: #F8FAFC;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Custom scrollbar for premium feel */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom Dark Enterprise Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #060913;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border);
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background: rgba(11, 18, 33, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(30, 41, 59, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  }
+}
