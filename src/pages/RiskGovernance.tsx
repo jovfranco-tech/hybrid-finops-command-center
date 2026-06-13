@@ -1,5 +1,5 @@
 import { MainLayout } from '../components/layout/MainLayout';
-import { ShieldAlert, Tag, Users, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, Tag, Users, ShieldCheck, Clock, Activity, Target } from 'lucide-react';
 import { KpiCard } from '../components/ui/KpiCard';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useData } from '../data/DataContext';
@@ -24,6 +24,9 @@ export const RiskGovernance = () => {
   const completedActions = workflowActions.filter(a => a.status === 'Completed').length;
   const workflowCompletionRate = totalActions > 0 ? Math.round((completedActions / totalActions) * 100) : 0;
   const exceptions = workflowActions.filter(a => a.status === 'Exception');
+  const overdueActions = workflowActions.filter(a => a.status === 'New' || a.status === 'In Review').length; // Mock overdue as actions that are New/In Review
+  const ownerResponseGap = workflowActions.filter(a => a.status === 'New').length;
+  const governanceMaturityScore = Math.min(100, Math.round((ownerCoverage * 0.4) + (workflowCompletionRate * 0.6)));
 
   return (
     <MainLayout>
@@ -65,7 +68,7 @@ export const RiskGovernance = () => {
         </div>
 
         {totalActions > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <KpiCard 
               title="Workflow Completion" 
               value={`${workflowCompletionRate}%`} 
@@ -86,6 +89,27 @@ export const RiskGovernance = () => {
               subtitle="Monthly savings blocked" 
               icon={ShieldAlert} 
               color="rose" 
+            />
+            <KpiCard 
+              title="Overdue Actions" 
+              value={overdueActions.toString()} 
+              subtitle="Pending SLAs breached" 
+              icon={Clock} 
+              color={overdueActions > 0 ? 'amber' : undefined} 
+            />
+            <KpiCard 
+              title="Owner Response Gap" 
+              value={ownerResponseGap.toString()} 
+              subtitle="Unacknowledged tickets" 
+              icon={Activity} 
+              color={ownerResponseGap > 0 ? 'amber' : undefined} 
+            />
+            <KpiCard 
+              title="Governance Maturity" 
+              value={`${governanceMaturityScore}/100`} 
+              subtitle="Optimization readiness" 
+              icon={Target} 
+              color={governanceMaturityScore > 75 ? 'emerald' : 'amber'} 
             />
           </div>
         )}

@@ -2,16 +2,19 @@ import { useState, useMemo } from 'react';
 import { MainLayout } from '../components/layout/MainLayout';
 import { useData } from '../data/DataContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { Activity, CheckCircle, Clock, AlertTriangle, ArrowRight, DollarSign, ListTodo } from 'lucide-react';
+import { Activity, CheckCircle, Clock, AlertTriangle, ArrowRight, DollarSign, ListTodo, Search, Trash2, ShieldAlert } from 'lucide-react';
 import type { OptimizationAction } from '../types';
 import { ActionDetailDrawer } from '../components/workflow/ActionDetailDrawer';
 
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#64748b'];
 
 export const OptimizationWorkflow = () => {
-  const { workflowActions } = useData();
+  const { workflowActions, resetWorkflow } = useData();
   const [selectedAction, setSelectedAction] = useState<OptimizationAction | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('All');
+  const [filterPlatform, setFilterPlatform] = useState<string>('All');
+  const [filterRisk, setFilterRisk] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const stats = useMemo(() => {
     let estMonthly = 0;
@@ -19,6 +22,8 @@ export const OptimizationWorkflow = () => {
     let completedMonthly = 0;
     let exceptions = 0;
     let pendingApproval = 0;
+    let actionsAssigned = 0;
+    let actionsCompleted = 0;
 
     workflowActions.forEach(a => {
       estMonthly += a.estimatedMonthlySavings;
@@ -27,12 +32,14 @@ export const OptimizationWorkflow = () => {
       }
       if (a.status === 'Completed') {
         completedMonthly += (a.approvedMonthlySavings || a.estimatedMonthlySavings);
+        actionsCompleted++;
       }
       if (a.status === 'Exception') exceptions++;
       if (a.status === 'In Review') pendingApproval += a.estimatedMonthlySavings;
+      if (a.status !== 'New' && a.status !== 'Completed' && a.status !== 'Exception') actionsAssigned++;
     });
 
-    return { estMonthly, approvedMonthly, completedMonthly, exceptions, pendingApproval };
+    return { estMonthly, approvedMonthly, completedMonthly, exceptions, pendingApproval, actionsAssigned, actionsCompleted };
   }, [workflowActions]);
 
   const statusData = useMemo(() => {
@@ -48,20 +55,43 @@ export const OptimizationWorkflow = () => {
   }, [workflowActions]);
 
   const filteredActions = useMemo(() => {
-    if (filterStatus === 'All') return workflowActions;
-    return workflowActions.filter(a => a.status === filterStatus);
-  }, [workflowActions, filterStatus]);
+    return workflowActions.filter(a => {
+      const matchStatus = filterStatus === 'All' || a.status === filterStatus;
+      const matchPlatform = filterPlatform === 'All' || a.platform === filterPlatform;
+      const matchRisk = filterRisk === 'All' || a.riskLevel === filterRisk;
+      const q = searchQuery.toLowerCase();
+      const matchSearch = q === '' || 
+        a.id.toLowerCase().includes(q) || 
+        a.resourceName.toLowerCase().includes(q) || 
+        a.issue.toLowerCase().includes(q) || 
+        (a.owner && a.owner.toLowerCase().includes(q));
+      
+      return matchStatus && matchPlatform && matchRisk && matchSearch;
+    });
+  }, [workflowActions, filterStatus, filterPlatform, filterRisk, searchQuery]);
 
   return (
     <MainLayout>
       <div className="w-full space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-100 tracking-tight">Optimization Workflow</h1>
-          <p className="text-slate-400 mt-1 text-sm">Manage optimization opportunities through approval and execution.</p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-100 tracking-tight">Optimization Workflow</h1>
+            <p className="text-slate-400 mt-1 text-sm">Manage optimization opportunities through approval and execution.</p>
+          </div>
+          <button 
+            onClick={() => {
+              if (window.confirm("Are you sure you want to reset all workflow data? This will clear all actions and approvals.")) {
+                resetWorkflow();
+              }
+            }}
+            className="flex items-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-rose-500/20"
+          >
+            <Trash2 className="w-4 h-4" /> Reset Workflow Data
+          </button>
         </div>
 
         {/* Dashboard KPIs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
           <div className="glass-panel p-4 rounded-xl">
             <div className="flex items-center gap-2 mb-2">
               <DollarSign className="w-4 h-4 text-indigo-400" />
@@ -96,6 +126,20 @@ export const OptimizationWorkflow = () => {
               <h3 className="text-xs font-semibold text-slate-400 uppercase">Exceptions</h3>
             </div>
             <p className="text-2xl font-bold text-rose-400">{stats.exceptions} Actions</p>
+          </div>
+          <div className="glass-panel p-4 rounded-xl">
+            <div className="flex items-center gap-2 mb-2">
+              <Activity className="w-4 h-4 text-cyan-400" />
+              <h3 className="text-xs font-semibold text-slate-400 uppercase">Assigned</h3>
+            </div>
+            <p className="text-2xl font-bold text-cyan-400">{stats.actionsAssigned} Actions</p>
+          </div>
+          <div className="glass-panel p-4 rounded-xl">
+            <div className="flex items-center gap-2 mb-2">
+              <CheckCircle className="w-4 h-4 text-emerald-400" />
+              <h3 className="text-xs font-semibold text-slate-400 uppercase">Completed</h3>
+            </div>
+            <p className="text-2xl font-bold text-emerald-400">{stats.actionsCompleted} Actions</p>
           </div>
         </div>
 
@@ -157,7 +201,17 @@ export const OptimizationWorkflow = () => {
               <ListTodo className="w-5 h-5 text-indigo-400" />
               Action Register
             </h3>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              <div className="relative">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                <input 
+                  type="text" 
+                  placeholder="Search actions..."
+                  className="bg-[#050810] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-48"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
               <select 
                 className="bg-[#050810] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
                 value={filterStatus}
@@ -169,6 +223,29 @@ export const OptimizationWorkflow = () => {
                 <option value="Approved">Approved</option>
                 <option value="Completed">Completed</option>
                 <option value="Exception">Exception</option>
+              </select>
+              <select 
+                className="bg-[#050810] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                value={filterPlatform}
+                onChange={(e) => setFilterPlatform(e.target.value)}
+              >
+                <option value="All">All Platforms</option>
+                <option value="Azure">Azure</option>
+                <option value="VMware">VMware</option>
+                <option value="NetApp">NetApp</option>
+                <option value="Pure Storage">Pure Storage</option>
+                <option value="Rubrik">Rubrik</option>
+                <option value="SharePoint">SharePoint</option>
+              </select>
+              <select 
+                className="bg-[#050810] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                value={filterRisk}
+                onChange={(e) => setFilterRisk(e.target.value)}
+              >
+                <option value="All">All Risks</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </select>
             </div>
           </div>
@@ -222,8 +299,14 @@ export const OptimizationWorkflow = () => {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
-                      No actions match the current filter. Create actions from the Opportunity Board.
+                    <td colSpan={7} className="px-6 py-16 text-center">
+                      <div className="flex flex-col items-center justify-center text-slate-500">
+                        <ShieldAlert className="w-10 h-10 mb-4 text-slate-600" />
+                        <h4 className="text-lg font-medium text-slate-300 mb-1">No actions found</h4>
+                        <p className="text-sm max-w-sm">
+                          There are no optimization actions matching your current filters. Adjust your search or create new actions from the Opportunity Board.
+                        </p>
+                      </div>
                     </td>
                   </tr>
                 )}

@@ -1,32 +1,47 @@
-# Hybrid FinOps Command Center: Demo Scripts
+# Hybrid FinOps Command Center - v0.3.0 Demo Script
 
-This document provides tailored scripts for presenting the application to different audiences.
+## Setup
+1. Launch the application (locally or via Vercel).
+2. Ensure you are on the "Executive Overview" page.
+3. Switch language to English (or Spanish if requested).
 
-## The 90-Second Core Demo
+## Flow 1: Executive Overview & Risk
+"Welcome to the Hybrid FinOps Command Center. The Executive Overview gives us an immediate pulse on our hybrid infrastructure waste across Azure, VMware, and more. Right now, we're tracking a Waste Intel Score based on our current data."
 
-*"Welcome to the Hybrid FinOps Command Center. Traditional cloud billing tools only show what you've spent on public cloud. But enterprise waste hides everywhere: in oversized on-premise VMs, orphaned NetApp storage, and forgotten M365 licenses.*
+*Action: Navigate to "Risk & Governance"*
 
-*This platform is an AI-native waste intelligence engine. We normalize telemetry across Azure, VMware, Oracle, NetApp, Pure Storage, Rubrik, and SharePoint into a single pane of glass.*
+"In v0.3.0, we introduced a strong governance layer. We track Owner Response Gaps and Overdue Actions. You can see our Governance Maturity Score here, which tells us how well we are turning identified waste into executed savings."
 
-*On the **Executive Overview**, you immediately see our proprietary Hybrid Waste Score and the true risk-adjusted savings potential.*
+## Flow 2: Finding Opportunities
+*Action: Navigate to "Optimization Board"*
 
-*Next, we navigate to the **Data Connectors**. We can download sample templates, import our real-world CSV exports from VMware or Azure, and the browser locally parses them with PapaParse—instantly generating a Data Quality Score and applying our heuristic rules to find waste without sending sensitive data to the backend.*
+"Let's look at the actual recommendations. The Opportunity Board lets us filter by platform. Let's find a high-impact 'Quick Win'."
 
-*Drilling down into the **Savings Opportunity Board**, we don't just list resources; our deterministic engine flags exact actions—like downsizing a specific Azure VM—with a calculated risk level, source badge, and an owner.*
+*Action: Click 'Create Action' on a high-value recommendation.*
 
-*To execute, we open the **AI FinOps Analyst**. Powered securely by Gemini 2.5 via Serverless Edge, I can ask for a '30-day optimization plan'. The AI parses our normalized data and outputs a structured execution plan.*
+"By clicking 'Create Action', we convert a raw recommendation into a tracked workflow item. This brings us to the Action Register."
 
-*Finally, with one click, we can export a Markdown-ready executive report for the CIO."*
+## Flow 3: The Optimization Workflow
+*Action: Navigate to "Optimization Workflow" if not already there, then open an Action Detail Drawer.*
 
----
+"This is the heart of v0.3.0. Here we have full lifecycle management. I can assign an owner, draft an email, or generate an ITSM ticket."
 
-## Audience-Specific Variations
+*Action: Demonstrate the "Approve Action" feature.*
 
-### 1. The Recruiter Version (Focus: Impact & Skills)
-"I built this application to showcase a complete B2B SaaS lifecycle. I acted as the Product Manager, UX Designer, and Lead Engineer. It uses React, Vite, and Tailwind v4 for a premium dark-mode interface, and integrates Google Gemini via Vercel Serverless Edge functions. It proves I can build complex, data-dense applications that look boardroom-ready and solve real business problems, rather than just basic crud apps."
+"When an engineering team approves an action, they can adjust the 'Approved Savings' and leave conditional approval notes. If an action is blocked, we can mark it as an 'Exception' and log the business justification."
 
-### 2. The CIO / Client Version (Focus: Value & Security)
-"Your biggest problem isn't data collection, it's actionable intelligence. We ingest your cross-platform telemetry securely—the data stays strictly within the browser and is evaluated offline by our deterministic rules engine. Only sanitized, token-optimized context is sent to the Gemini AI to generate action plans. You get instant visibility into where your money is bleeding across VMware and Azure, without risking production stability."
+## Flow 4: The AI Copilot Context
+*Action: Open the Copilot Drawer.*
 
-### 3. The Technical Interviewer Version (Focus: Architecture)
-"The core challenge was unifying disparate telemetry formats from 7 different vendors without a heavy backend. I solved this by building a client-side CSV staging area using PapaParse and a normalized React Context state machine. For the AI Copilot, I implemented a Vercel Serverless function utilizing Google's `genai` SDK with Structured JSON Outputs, guaranteeing deterministic UI rendering. If the API fails or is unconfigured, I implemented a seamless fallback to local regex heuristics to ensure the app never breaks in production."
+"The AI Copilot is now aware of our workflow. I'll ask it: 'What is the state of our pending approvals?'"
+
+*Action: Type 'Summarize the optimization pipeline.'*
+
+"Gemini automatically analyzes our local workflow state—without sending sensitive PII—and gives us a strategic summary of what actions are blocking savings."
+
+## Flow 5: The Executive Report
+*Action: Navigate to "Board Reports" and click "Download Report"*
+
+"Finally, we can export a Board-ready Markdown report. In this version, it automatically includes our 30/60/90 day governance plan, explicitly listing our Next 7 Days actions and any escalated exceptions."
+
+"Thank you. This concludes the v0.3.0 Optimization Workflow demo."

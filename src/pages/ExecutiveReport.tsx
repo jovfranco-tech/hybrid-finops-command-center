@@ -27,6 +27,9 @@ export const ExecutiveReport = () => {
   }, 0);
   const pendingSavings = workflowActions.reduce((acc, act) => act.status === 'In Review' ? acc + act.estimatedMonthlySavings : acc, 0);
   const pendingActions = workflowActions.filter(a => a.status === 'In Review').slice(0, 5);
+  const exceptions = workflowActions.filter(a => a.status === 'Exception');
+  const ownerFollowUpList = workflowActions.filter(a => a.owner && a.status === 'New').slice(0, 5);
+  const next7DaysActions = workflowActions.filter(a => a.status === 'Approved').slice(0, 5);
 
   const generateMarkdown = () => {
     const md = `
@@ -57,10 +60,19 @@ ${topOpportunities.map((o, i) => `${i + 1}. **${o.resourceName}** (${o.platform}
 ${pendingActions.length > 0 ? `### Top Pending Approvals
 ${pendingActions.map((a, i) => `${i + 1}. **${a.resourceName}** - $${a.estimatedMonthlySavings.toLocaleString()}/mo (Owner: ${a.owner || 'Unknown'})`).join('\n')}
 ` : ''}
-## 30/60/90 Day Plan
-- **30 Days:** Execute all 'Quick Wins' and currently approved workflow actions.
-- **60 Days:** Right-size Azure/VMware non-prod (Requires maintenance windows).
-- **90 Days:** Expand workflow assignment to all missing owners.
+${exceptions.length > 0 ? `### Exceptions Logged
+${exceptions.map((a, i) => `${i + 1}. **${a.resourceName}** - ${a.exceptionReason || 'No reason provided'}`).join('\n')}
+` : ''}
+${ownerFollowUpList.length > 0 ? `### Owner Follow-up List
+${ownerFollowUpList.map((a, i) => `${i + 1}. **${a.owner}** - ${a.resourceName} ($${a.estimatedMonthlySavings.toLocaleString()}/mo)`).join('\n')}
+` : ''}
+${next7DaysActions.length > 0 ? `### Next 7 Days Actions (Approved for Execution)
+${next7DaysActions.map((a, i) => `${i + 1}. **${a.resourceName}** - ${a.actionPlan}`).join('\n')}
+` : ''}
+## 30/60/90 Day Governance Plan
+- **30 Days:** Execute ${next7DaysActions.length} approved actions. Resolve ${pendingActions.length} pending approvals.
+- **60 Days:** Process ${ownerFollowUpList.length} owner follow-ups. Escalate ${exceptions.length} exceptions to architecture board.
+- **90 Days:** Expand workflow assignment to all missing owners and transition manual reviews to ITSM automation.
     `;
     
     const blob = new Blob([md], { type: 'text/markdown' });
@@ -139,7 +151,19 @@ ${pendingActions.map((a, i) => `${i + 1}. **${a.resourceName}** - $${a.estimated
                   <li className="text-sm border-b border-slate-200 pb-2">Approved Savings: <strong className="text-emerald-700">${approvedSavings.toLocaleString()}</strong></li>
                   <li className="text-sm border-b border-slate-200 pb-2">Completed Savings: <strong className="text-emerald-700">${completedSavings.toLocaleString()}</strong></li>
                   <li className="text-sm border-b border-slate-200 pb-2">Pending Approval: <strong className="text-amber-700">${pendingSavings.toLocaleString()}</strong></li>
+                  <li className="text-sm border-b border-slate-200 pb-2">Exceptions Logged: <strong className="text-rose-700">{exceptions.length}</strong></li>
                 </ul>
+
+                <h2 className="text-xl font-bold mt-6 mb-3 text-indigo-900">30/60/90 Day Governance Plan</h2>
+                <p className="text-sm leading-relaxed mb-2 text-slate-700">
+                  <strong>30 Days:</strong> Execute {next7DaysActions.length} approved actions. Resolve {pendingActions.length} pending approvals.
+                </p>
+                <p className="text-sm leading-relaxed mb-2 text-slate-700">
+                  <strong>60 Days:</strong> Process {ownerFollowUpList.length} owner follow-ups. Escalate {exceptions.length} exceptions.
+                </p>
+                <p className="text-sm leading-relaxed mb-4 text-slate-700">
+                  <strong>90 Days:</strong> Expand workflow assignment to all missing owners and transition manual reviews to ITSM automation.
+                </p>
 
                 <h2 className="text-xl font-bold mt-6 mb-3 text-indigo-900">Risk Assessment</h2>
                 <p className="text-sm leading-relaxed mb-4">

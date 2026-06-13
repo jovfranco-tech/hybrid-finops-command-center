@@ -17,23 +17,50 @@ export const ActionDetailDrawer = ({ action, onClose }: ActionDetailDrawerProps)
   const [ticketDraft, setTicketDraft] = useState('');
   const [exceptionReason, setExceptionReason] = useState('');
   const [isExceptionMode, setIsExceptionMode] = useState(false);
+  const [isApprovingMode, setIsApprovingMode] = useState(false);
+  const [approvedSavingsInput, setApprovedSavingsInput] = useState('');
+  const [approvalNoteInput, setApprovalNoteInput] = useState('');
+  const [editingOwner, setEditingOwner] = useState(false);
+  const [ownerInput, setOwnerInput] = useState('');
 
   useEffect(() => {
     if (action) {
       setEmailDraft(generateOwnerEmail(action, language));
       setTicketDraft(generateTicketDraft(action, language));
       setIsExceptionMode(false);
+      setIsApprovingMode(false);
       setExceptionReason('');
+      setApprovedSavingsInput(action.estimatedMonthlySavings.toString());
+      setApprovalNoteInput('');
+      setOwnerInput(action.owner || '');
+      setEditingOwner(false);
     }
   }, [action, language]);
 
   if (!action) return null;
 
   const handleStatusChange = (status: WorkflowStatus) => {
-    updateActionStatus(action.id, status, status === 'Approved' ? { approvedMonthlySavings: action.estimatedMonthlySavings, approvedAnnualSavings: action.estimatedAnnualSavings } : undefined);
-    if (status !== 'Exception') {
-      setIsExceptionMode(false);
+    updateActionStatus(action.id, status);
+    if (status !== 'Exception') setIsExceptionMode(false);
+    if (status !== 'Approved') setIsApprovingMode(false);
+  };
+
+  const handleApproveSubmit = () => {
+    const savings = parseFloat(approvedSavingsInput) || action.estimatedMonthlySavings;
+    const payload: Partial<OptimizationAction> = { 
+      approvedMonthlySavings: savings, 
+      approvedAnnualSavings: savings * 12 
+    };
+    if (approvalNoteInput.trim()) {
+      payload.approvalNotes = [...action.approvalNotes, approvalNoteInput.trim()];
     }
+    updateActionStatus(action.id, 'Approved', payload);
+    setIsApprovingMode(false);
+  };
+
+  const handleOwnerSubmit = () => {
+    updateActionStatus(action.id, action.status, { owner: ownerInput.trim() || null });
+    setEditingOwner(false);
   };
 
   const handleExceptionSubmit = () => {
@@ -97,8 +124,8 @@ export const ActionDetailDrawer = ({ action, onClose }: ActionDetailDrawerProps)
               <p className="text-xl font-bold text-emerald-400">${action.estimatedMonthlySavings.toLocaleString()}</p>
             </div>
             <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
-              <p className="text-xs text-slate-500 mb-1">Est. Annual Savings</p>
-              <p className="text-xl font-bold text-emerald-400">${action.estimatedAnnualSavings.toLocaleString()}</p>
+              <p className="text-xs text-slate-500 mb-1">{action.status === 'Approved' || action.status === 'Completed' ? 'Approved Annual' : 'Est. Annual Savings'}</p>
+              <p className="text-xl font-bold text-emerald-400">${(action.status === 'Approved' || action.status === 'Completed' ? action.approvedAnnualSavings : action.estimatedAnnualSavings)?.toLocaleString()}</p>
             </div>
             <div className="bg-[#050810] p-4 rounded-xl border border-white/5">
               <p className="text-xs text-slate-500 mb-1">Risk Level</p>
@@ -124,7 +151,24 @@ export const ActionDetailDrawer = ({ action, onClose }: ActionDetailDrawerProps)
                 <div className="flex items-center gap-3 text-sm">
                   <User className="w-4 h-4 text-slate-500" />
                   <span className="text-slate-400 w-20">Owner:</span>
-                  <span className="text-slate-200 font-medium">{action.owner || 'Unassigned'}</span>
+                  {editingOwner ? (
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="text" 
+                        className="bg-[#050810] border border-white/10 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 w-32"
+                        value={ownerInput}
+                        onChange={(e) => setOwnerInput(e.target.value)}
+                        autoFocus
+                        onKeyDown={(e) => e.key === 'Enter' && handleOwnerSubmit()}
+                      />
+                      <button onClick={handleOwnerSubmit} className="text-xs text-indigo-400 hover:text-indigo-300">Save</button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setEditingOwner(true)}>
+                      <span className="text-slate-200 font-medium">{action.owner || 'Unassigned'}</span>
+                      <span className="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">(edit)</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Briefcase className="w-4 h-4 text-slate-500" />
@@ -148,6 +192,56 @@ export const ActionDetailDrawer = ({ action, onClose }: ActionDetailDrawerProps)
               </div>
             </div>
           </div>
+
+          {/* Approval Notes */}
+          {action.approvalNotes && action.approvalNotes.length > 0 && (
+            <div className="bg-indigo-500/5 border border-indigo-500/10 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-indigo-400 flex items-center gap-2 mb-3">
+                <CheckCircle className="w-4 h-4" /> Approval Notes
+              </h3>
+              <div className="space-y-2">
+                {action.approvalNotes.map((note, i) => (
+                  <div key={i} className="text-sm text-slate-300 bg-[#050810] p-2.5 rounded-lg border border-white/5">
+                    {note}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Approving Mode */}
+          {isApprovingMode && (
+            <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 space-y-4">
+              <h3 className="text-sm font-semibold text-indigo-300 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4" /> Approve Action
+              </h3>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Approved Monthly Savings ($)</label>
+                  <input 
+                    type="number" 
+                    className="w-full bg-[#050810] border border-white/10 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                    value={approvedSavingsInput}
+                    onChange={(e) => setApprovedSavingsInput(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1">Approval Note (Optional)</label>
+                  <textarea 
+                    className="w-full bg-[#050810] border border-white/10 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                    placeholder="Add conditional approval details..."
+                    rows={2}
+                    value={approvalNoteInput}
+                    onChange={(e) => setApprovalNoteInput(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-2">
+                <button onClick={() => setIsApprovingMode(false)} className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200">Cancel</button>
+                <button onClick={handleApproveSubmit} className="px-3 py-1.5 text-xs font-medium bg-indigo-500 text-white hover:bg-indigo-600 rounded-md">Confirm Approval</button>
+              </div>
+            </div>
+          )}
 
           {/* Exceptions */}
           {action.status === 'Exception' && action.exceptionReason && (
@@ -234,9 +328,10 @@ export const ActionDetailDrawer = ({ action, onClose }: ActionDetailDrawerProps)
                 <AlertTriangle className="w-4 h-4" /> Exception
               </button>
               
-              {action.status !== 'Approved' && (
+              
+              {action.status !== 'Approved' && !isApprovingMode && (
                 <button 
-                  onClick={() => handleStatusChange('Approved')}
+                  onClick={() => { setIsApprovingMode(true); setIsExceptionMode(false); }}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-500 text-white hover:bg-indigo-600 shadow-lg shadow-indigo-500/20 transition-all"
                 >
                   <CheckCircle className="w-4 h-4" /> Approve Action

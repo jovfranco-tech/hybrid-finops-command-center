@@ -103,6 +103,10 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   } : null;
 
   const createAction = (rec: OptimizationRecommendation) => {
+    if (workflowActions.some(a => a.recommendationId === rec.id)) {
+      return; // Prevent duplicate actions
+    }
+
     // Generate basic action mapping (email and ticket generators will handle the rest via UI or utility functions)
     const newAction: OptimizationAction = {
       id: `ACT-${Math.floor(Math.random() * 10000)}`,

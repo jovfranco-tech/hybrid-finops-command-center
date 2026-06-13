@@ -110,7 +110,8 @@ export const CopilotDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: (
         totalActions: workflowActions.length,
         approvedSavings: workflowActions.filter(a => ['Approved', 'Completed'].includes(a.status)).reduce((acc, a) => acc + (a.approvedMonthlySavings || a.estimatedMonthlySavings), 0),
         pendingApprovals: workflowActions.filter(a => a.status === 'In Review').length,
-        exceptions: workflowActions.filter(a => a.status === 'Exception').length
+        exceptions: workflowActions.filter(a => a.status === 'Exception').length,
+        overdueActions: workflowActions.filter(a => a.status === 'New' || a.status === 'In Review').length
       };
 
       // In a real scenario, we might want to truncate contextSummary if it's too large for the model token limit
